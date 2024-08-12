@@ -26,3 +26,4 @@ func ConnectToTcpServer(network string, address string) (net.Conn, error) {
 
 	return connection, err
 }
+

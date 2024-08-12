@@ -26,6 +26,5 @@ func GetEnv(key string) string{
 
 func HandleConnection(conn net.Conn)  {
 	clientAddr := conn.RemoteAddr().String()
-
 	fmt.Printf("Client %s connected \n", clientAddr)
 }
