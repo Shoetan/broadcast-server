@@ -39,7 +39,22 @@ func GetEnv(key string) string{
 	return env
 }
 
-// handle connections to the TCP server
-// in this connection find a way to store the connect clients 
-// Also find a way to remove clients from the list of connected clients
-// Remember when you close the main server all the connected clients are closed
+func SaveConnectionDetails(conn net.Conn)  {
+	// save the connection to a file 
+	err := os.WriteFile("connection.txt", []byte(conn.LocalAddr().String()), 0644)
+
+	if err != nil {
+		fmt.Println("Error saving connection details")
+	}
+	
+}
+
+func LoadConnectionDetails() string {
+	data, err := os.ReadFile("connection.txt")
+
+	if err != nil {
+		fmt.Println("Could not load connection details")
+	}
+	return string(data)
+}
+

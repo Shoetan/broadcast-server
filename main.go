@@ -21,7 +21,15 @@ func main() {
 	port := utils.GetEnv("PORT")
 	address := net.JoinHostPort(host, port)
 
-	command := strings.Join(os.Args[1:3], " ") // get command from terminal 
+	
+
+	if len(os.Args) < 2 {
+		fmt.Println("Expected 'start server', 'connect server', or 'send message' subcommands")
+		os.Exit(1)
+	}
+
+	command := strings.Join(os.Args[1:], " ") // get command from terminal 
+
 
 	switch command {
 	case "start server":
@@ -46,17 +54,24 @@ func main() {
 			
 			go utils.HandleConnection(conn)
 	}
-	
+
 	case "connect server":
 		clientConnection, err := server.ConnectToTcpServer("tcp", address)
 		if err != nil {
 			fmt.Println("Could not connect to server")
 		}
-		fmt.Println("Connected to TCP server:",clientConnection.RemoteAddr().String() )
-		fmt.Println("Client connected to the TCP server", clientConnection.LocalAddr().String())
+
+		if clientConnection != nil {
+			fmt.Println("Connected to TCP server:",clientConnection.RemoteAddr().String() )
+			utils.SaveConnectionDetails(clientConnection)
+		} else {
+			fmt.Println("Failed to establish connection")
+		}
 
 	case "send message":
-		fmt.Println("Client sending message:", clientConnection)
+		// get connection details from stored file 
+		client := utils.LoadConnectionDetails()
+		fmt.Println(client)
 			
 	default:
 		fmt.Println("Unknow command", command)	
@@ -65,15 +80,4 @@ func main() {
 	}
 }
 
-	// Store list of connected address
-	//Check if the address is in the list of connected address
-	// Disconnect the address from the TCP server
-	// Do a disconnect from TCP server function in the server pkg
-	// Bring the function here and implement it 
-	// Import the client pool here and check if the connection is in the client pool
-	// if yes close the connection, if no tell the user is not connected
-	// if clientConnection == {
-	// 	server.DisconnectFromTcpServer(clientConnection)
-	// }
-	// Disconnect server is to remove the present connection from the server and close all 
-	// user should disconnect from the server by sending a message like QUIT
+
