@@ -7,8 +7,6 @@ import (
 	"os"
 	"bufio"
 	"strings"
-	// "os/signal"
-	// "syscall"
 
 	"github.com/Shoetan/server"
 	"github.com/Shoetan/utils"
@@ -67,28 +65,42 @@ func main() {
 		} else {
 			fmt.Println("Failed to establish connection 🛑")
 		}
-		reader := bufio.NewReader(os.Stdin)
-		for {
-			fmt.Printf("What would you like to do now that you are connected? 😁\n")
-			fmt.Printf("1. Send message to server 💬\n")
-			fmt.Printf("2. Exit server 🗑 \n")
 
-			fmt.Println("Enter choice ")
+		exitChan := make(chan bool)
 
-			choice, _ := reader.ReadString('\n')
-			choice = strings.TrimSpace(choice)
-
-			switch choice {
-			case "1":
-				fmt.Println("You want to send a message 📁")
-				utils.SendMessage(clientConnection, []byte("Hello"))
-
-			case "2":
-				fmt.Println("You want to exit the server 🗑")
-
+		go func ()  {
+			
+			reader := bufio.NewReader(os.Stdin)
+			for {
+				fmt.Printf("What would you like to do now that you are connected? 😁\n")
+				fmt.Printf("1. Send message to server 💬\n")
+				fmt.Printf("2. Exit server 🗑 \n")
+	
+				fmt.Println("Enter choice ")
+	
+				choice, _ := reader.ReadString('\n')
+				choice = strings.TrimSpace(choice)
+	
+				switch choice {
+				case "1":
+					fmt.Println("You want to send a message 📁")
+					utils.SendMessage(clientConnection, []byte("Hello"))
+	
+				case "2":
+					fmt.Println("You want to exit the server 🗑")
+					exitChan <- true
+					return
+				}
 			}
+		}()
+		
+		value:= <- exitChan
+
+		if value {
+			fmt.Println("Disconnected from the TCP server 😔")
+			clientConnection.Close()
 		}
-					
+
 	default:
 		fmt.Println("Unknow command 🤦🏼‍♂️", command)	
 		os.Exit(1)
