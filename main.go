@@ -35,9 +35,9 @@ func main() {
 		listener, err := server.StartTcpServer("tcp", address)
 	
 		if err != nil {
-			log.Fatalf("Could not start a tcp server:%v", err.Error())
+			log.Fatalf("Could not start TCP server:%v", err.Error())
 		}else{
-			fmt.Printf("The tcp server is running on address 🌐 %v\n", address)
+			fmt.Printf("TCP server irunning on address 🌐 %v\n", address)
 		}
 
 		defer listener.Close()
