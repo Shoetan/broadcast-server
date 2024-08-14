@@ -23,7 +23,7 @@ func HandleConnection(conn net.Conn)  {
 
 	poolMutex.Unlock()
 
-	fmt.Println("clientPool:",ClientPool)
+	//fmt.Println("clientPool:",ClientPool)
 }
 
 
@@ -44,7 +44,7 @@ func SaveConnectionDetails(conn net.Conn)  {
 	err := os.WriteFile("connection.txt", []byte(conn.LocalAddr().String()), 0644)
 
 	if err != nil {
-		fmt.Println("Error saving connection details")
+		fmt.Println("Error saving connection details ❌")
 	}
 	
 }
@@ -55,6 +55,18 @@ func LoadConnectionDetails() string {
 	if err != nil {
 		fmt.Println("Could not load connection details")
 	}
+
 	return string(data)
+
+}
+
+func SendMessage(conn net.Conn, message []byte)  {
+	_, err := conn.Write(message)
+
+	if err != nil {
+		fmt.Println("Could not send message to the server")
+	} else {
+		fmt.Println("Message sent ...")
+	}
 }
 

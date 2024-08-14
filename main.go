@@ -5,6 +5,7 @@ import (
 	"log"
 	"net"
 	"os"
+	"bufio"
 	"strings"
 	// "os/signal"
 	// "syscall"
@@ -13,7 +14,6 @@ import (
 	"github.com/Shoetan/utils"
 )
 
-var clientConnection net.Conn
 
 func main() {
 
@@ -39,7 +39,7 @@ func main() {
 		if err != nil {
 			log.Fatalf("Could not start a tcp server:%v", err.Error())
 		}else{
-			fmt.Printf("The tcp server is running on address.. %v\n", address)
+			fmt.Printf("The tcp server is running on address 🌐 %v\n", address)
 		}
 
 		defer listener.Close()
@@ -48,7 +48,7 @@ func main() {
 		for {
 			conn, err := listener.Accept()
 			if err != nil {
-			fmt.Printf("Error accepting new connections %v", err.Error())
+			fmt.Printf("Error accepting new connections 🛑 %v", err.Error())
 			continue
 			}
 			
@@ -62,19 +62,35 @@ func main() {
 		}
 
 		if clientConnection != nil {
-			fmt.Println("Connected to TCP server:",clientConnection.RemoteAddr().String() )
+			fmt.Println("Connected to TCP server ✅ :",clientConnection.RemoteAddr().String() )
 			utils.SaveConnectionDetails(clientConnection)
 		} else {
-			fmt.Println("Failed to establish connection")
+			fmt.Println("Failed to establish connection 🛑")
 		}
+		reader := bufio.NewReader(os.Stdin)
+		for {
+			fmt.Printf("What would you like to do now that you are connected? 😁\n")
+			fmt.Printf("1. Send message to server 💬\n")
+			fmt.Printf("2. Exit server 🗑 \n")
 
-	case "send message":
-		// get connection details from stored file 
-		client := utils.LoadConnectionDetails()
-		fmt.Println(client)
-			
+			fmt.Println("Enter choice ")
+
+			choice, _ := reader.ReadString('\n')
+			choice = strings.TrimSpace(choice)
+
+			switch choice {
+			case "1":
+				fmt.Println("You want to send a message 📁")
+				utils.SendMessage(clientConnection, []byte("Hello"))
+
+			case "2":
+				fmt.Println("You want to exit the server 🗑")
+
+			}
+		}
+					
 	default:
-		fmt.Println("Unknow command", command)	
+		fmt.Println("Unknow command 🤦🏼‍♂️", command)	
 		os.Exit(1)
 
 	}
