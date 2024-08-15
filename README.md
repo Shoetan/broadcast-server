@@ -5,7 +5,7 @@ A simple TCP-based server for local communication. Allows multiple clients to co
 * Go (version 1.22 or later recommended)
 
 ## Getting Started
-* Clone repository ``
+* Clone repository `git@github.com:Shoetan/broadcast-server.git`
 * cd into the cloned repository
 
 ## Commands
