@@ -5,6 +5,7 @@ import (
 	"log"
 	"net"
 	"os"
+	// "strings"
 	"sync"
 
 	"github.com/joho/godotenv"
@@ -20,10 +21,13 @@ func HandleConnection(conn net.Conn)  {
 
 	poolMutex.Lock()
 	ClientPool[clientAddr] = conn
-
 	poolMutex.Unlock()
+	
+	buffer := make([]byte, 1024)  
+	n, _ := conn.Read(buffer)
+	message := string(buffer[:n])
 
-	//fmt.Println("clientPool:",ClientPool)
+	fmt.Printf("Received message from connection: %s\n", message)
 }
 
 

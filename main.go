@@ -70,21 +70,31 @@ func main() {
 
 		go func ()  {
 			
-			reader := bufio.NewReader(os.Stdin)
+			reader := bufio.NewReader(os.Stdin) 
 			for {
 				fmt.Printf("What would you like to do now that you are connected? 😁\n")
-				fmt.Printf("1. Send message to server 💬\n")
+				fmt.Printf("1. To send message to server: 1 <add message> 💬\n")
 				fmt.Printf("2. Exit server 🗑 \n")
 	
 				fmt.Println("Enter choice ")
 	
 				choice, _ := reader.ReadString('\n')
 				choice = strings.TrimSpace(choice)
+
+				parts := strings.Fields(choice) // seperate the input from the command line into parts
+
+				var message string 
+
+				if len(parts) >= 2 {
+					choice = parts[0] // assign various parts into  respective variables
+					message = parts[1]
+
+				}
 	
 				switch choice {
 				case "1":
 					fmt.Println("You want to send a message 📁")
-					utils.SendMessage(clientConnection, []byte("Hello"))
+					utils.SendMessage(clientConnection, []byte(message))
 	
 				case "2":
 					fmt.Println("You want to exit the server 🗑")
@@ -102,7 +112,7 @@ func main() {
 		}
 
 	default:
-		fmt.Println("Unknow command 🤦🏼‍♂️", command)	
+		fmt.Println("Unknow command 😭", command)	
 		os.Exit(1)
 
 	}
