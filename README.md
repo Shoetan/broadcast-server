@@ -19,6 +19,8 @@ A simple TCP-based server for local communication. Allows multiple clients to co
 
 ## Sub commands
 
+Below are the commands you can run after connecting to the TCP server.
+
 * Send a message to the TCP server `1 <message>`
 * Disconnect from the TCP server `2`
 
