@@ -1,6 +1,8 @@
 ## TCP SERVER
 A simple TCP-based server for local communication. Allows multiple clients to connect and exchange messages within a local network or over the internet if hosted 😂
 
+## Demo
+
 ## Prerequisites
 * Go (version 1.22 or later recommended)
 
@@ -18,4 +20,6 @@ A simple TCP-based server for local communication. Allows multiple clients to co
 
 * Send a message to the TCP server `1 <message>`
 * Disconnect from the TCP server `2`
+
+
   
