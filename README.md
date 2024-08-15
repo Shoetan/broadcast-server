@@ -2,6 +2,7 @@
 A simple TCP-based server for local communication. Allows multiple clients to connect and exchange messages within a local network or over the internet if hosted 😂
 
 ## Demo
+![A simple demo showing the operations of the TCP server](/resources/simpleDemo.gif)
 
 ## Prerequisites
 * Go (version 1.22 or later recommended)
